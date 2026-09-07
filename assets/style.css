@@ -1,0 +1,693 @@
+﻿/* assets/style.css - cleaned, consolidated for the app (copy-paste whole file) */
+
+/* Reset & box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Theme variables */
+:root {
+  --bg: #fffafb;
+  --card: #ffffff;
+  --card-soft: #fff7fb;
+  --text: #6b2143;
+  --text-soft: #8c5873;
+  --heading: #a21c5d;
+  --primary: #ec4899;
+  --primary-dark: #db2777;
+  --primary-soft: #fdf2f8;
+  --border: #f9c6dd;
+  --border-strong: #f4a7cb;
+  --shadow: 0 10px 30px rgba(219, 39, 119, 0.08);
+  --success-bg: #dcfce7;
+  --success-text: #166534;
+  --warning-bg: #fef3c7;
+  --warning-text: #92400e;
+
+  --base-font: 16px;
+  --page-max-width: 1400px;
+  --page-gutter: 24px;
+}
+
+/* Global */
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(244,114,182,0.08), transparent 280px),
+    radial-gradient(circle at top right, rgba(236,72,153,0.08), transparent 260px),
+    var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--page-max-width);
+  padding: 0 var(--page-gutter);
+  margin: 20px auto;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+/* Headings */
+h1,h2,h3,h4 { margin: 0 0 12px 0; color: var(--heading); line-height:1.15; font-weight:700; }
+h2 { font-size: clamp(24px, 2.2vw, 34px); }
+h3 { font-size: clamp(18px, 1.6vw, 24px); }
+h4 { font-size: clamp(16px, 1.2vw, 18px); }
+
+/* Text helpers */
+.muted { color: var(--text-soft); font-size: 14px; }
+.small { font-size: 13px; color: var(--text-soft); }
+
+/* Top navigation */
+.topnav.card {
+  display:flex; align-items:center; gap:12px; padding:12px 20px;
+  background: rgba(255,245,250,0.94);
+  position: sticky; top: 12px; z-index: 20;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.topnav a { text-decoration:none; color:var(--primary-dark); font-weight:700; padding:8px 6px; position:relative; }
+.topnav a::after { content:""; position:absolute; left:0; bottom:3px; width:0; height:2px; background:var(--primary); transition: width .18s; }
+.topnav a:hover::after { width:100%; }
+
+/* Buttons */
+.btn-plain { background: transparent; border: 0; color: var(--primary-dark); font-weight:700; cursor: pointer; padding: 6px 8px; }
+button { border:0; border-radius:12px; background: linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; padding:10px 16px; font-weight:700; cursor:pointer; box-shadow: 0 8px 18px rgba(236,72,153,0.18); }
+
+/* Tables */
+table { width:100%; border-collapse:collapse; }
+th,td { padding: 14px 12px; border-bottom:1px solid #f8d5e4; font-size:0.98rem; vertical-align:top; }
+th { background:#fff6fb; color:var(--heading); font-weight:700; }
+
+/* Forms */
+input, select, textarea { width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border-strong); background:#fff; color:var(--text); }
+input:focus, select:focus, textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(236,72,153,0.12); }
+
+/* Grid helpers */
+.grid, .chart-grid, .dashboard-plan-grid, .progress-summary, .report-grid { display: grid; gap: 18px; }
+
+/* Report-specific layout (fit one frame) */
+.report-view { font-size: clamp(16px,1.05vw,18px); line-height:1.6; display:flex; flex-direction:column; gap:18px; }
+.report-head { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.report-head h2 { margin:0; }
+.report-grid { display:flex; gap:18px; align-items:stretch; min-height:0; }
+.report-main { flex:1 1 65%; display:flex; flex-direction:column; min-height:0; min-width:300px; }
+.report-period { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+
+/* Activities list: scroll inside card so whole page fits one frame */
+.report-activities { border-radius:8px; padding:12px; background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); overflow:auto; flex:1 1 auto; min-height:0; }
+
+/* Sidebar */
+.report-sidebar { flex:0 0 32%; min-width:260px; display:flex; flex-direction:column; gap:12px; min-height:0; }
+.report-sidebar .card { padding:12px; overflow:auto; max-height: calc(100vh - 220px); }
+
+/* Entries */
+.daily-entry { margin-bottom:10px; border-bottom:1px dashed #eee; padding-bottom:8px; }
+.entry-date { font-weight:600; margin-bottom:6px; font-size: clamp(14px,0.9vw,16px); }
+.entry-text { white-space:pre-wrap; line-height:1.6; font-size: clamp(15px,1.02vw,18px); }
+
+/* Output & photos */
+.output-list { padding-left:18px; margin:0; }
+.output-list li { margin-bottom:6px; line-height:1.25; }
+.entry-photos, .photo-grid { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-start; }
+.thumb { display:inline-block; overflow:hidden; border-radius:6px; border:1px solid #ddd; background:#fff; }
+.thumb img { display:block; width:100%; height:auto; object-fit:cover; }
+
+/* Responsive thumbs */
+.entry-photos .thumb, .photo-grid .thumb { width: clamp(56px,12vw,120px); }
+.entry-photos .thumb img, .photo-grid .thumb img { aspect-ratio: 16/9; }
+
+/* Make embedded images responsive */
+.report-activities img, .report-output img, .report-photos img, .daily-entry img, .entry-photos img { max-width:100%; height:auto; display:block; border-radius:6px; object-fit:cover; }
+
+/* Charts - balanced sizing so they fit one frame */
+.chart-card, .highcharts-container, .chart-container {
+  width:100% !important;
+  margin:12px 0 !important;
+  max-height: min(48vh,520px) !important;
+  height: min(48vh,520px) !important;
+}
+.chart-card.small, .chart-card--small, .small-chart {
+  max-height: min(28vh,320px) !important;
+  height: min(28vh,320px) !important;
+}
+.chart-card canvas, .highcharts-container svg, .highcharts-container, .chart-container iframe { width:100% !important; height:100% !important; }
+.chart-wrapper, .chart-card, .highcharts-container { box-sizing:border-box; overflow:hidden; }
+
+/* Make chart groups sit side-by-side (two-per-row) */
+.charts-row {
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.charts-row .chart-card,
+.charts-row .chart-container,
+.charts-row .highcharts-container {
+  flex: 1 1 calc(50% - 9px);
+  max-width: calc(50% - 9px);
+  min-width: 280px;
+  box-sizing: border-box;
+}
+
+/* Tweak heights per chart type so donuts don't become too tall */
+.charts-row.donuts .chart-card,
+.charts-row.donuts .highcharts-container {
+  max-height: min(40vh, 380px) !important;
+  height: min(40vh, 380px) !important;
+}
+
+/* Bars / lines slightly taller but still fit one frame */
+.charts-row.bars .chart-card,
+.charts-row.lines .chart-card,
+.charts-row.bars .highcharts-container,
+.charts-row.lines .highcharts-container {
+  max-height: min(44vh, 420px) !important;
+  height: min(44vh, 420px) !important;
+}
+
+/* Make the internal svg/canvas fill their container */
+.charts-row .chart-card canvas,
+.charts-row .highcharts-container svg,
+.charts-row .chart-container iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Dashboard polish — charts & layout tidy (append to style.css) */
+
+/* Make chart area a responsive 2-column grid (falls back to 1 col on small screens) */
+.chart-grid,
+.charts-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 22px;
+  align-items: start;
+  width: 100%;
+}
+
+/* Normalize chart card visual & spacing */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 12px;
+  min-height: 280px;
+  max-height: 420px;
+  overflow: hidden;
+}
+
+/* Ensure chart SVG/canvas fills the card area without overflowing page */
+.chart-card .chart-inner,
+.chart-card canvas,
+.chart-card .highcharts-container,
+.highcharts-container {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Make donut charts visually smaller and centered */
+.chart-card.donut,
+.charts-row.donuts .chart-card,
+.highcharts-donut,
+.highcharts-series {
+  max-height: 340px !important;
+  height: 340px !important;
+}
+.chart-card.donut .highcharts-container,
+.charts-row.donuts .highcharts-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bar / line charts slightly taller but consistent */
+.chart-card.bar,
+.charts-row.bars .chart-card,
+.charts-row.lines .chart-card {
+  max-height: 420px !important;
+  height: 420px !important;
+}
+
+/* Make legends compact and centered under charts */
+.chart-card .chart-legend,
+.highcharts-legend {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  font-size: 13px !important;
+}
+
+/* Tighter heading + padding for dashboard area */
+.container > .card, .chart-card {
+  margin-bottom: 18px;
+}
+
+/* Reduce vertical whitespace between stacked chart sections */
+.section-title, .chart-card > h3 {
+  margin-bottom: 10px;
+}
+
+/* Make dashboard columns align top and cards equalize height where possible */
+.chart-grid > * {
+  align-self: start;
+}
+
+/* Responsive: stack singly on smaller screens */
+@media (max-width: 900px) {
+  .chart-grid,
+  .charts-row { grid-template-columns: 1fr; }
+  .chart-card { max-height: none; height: auto !important; }
+  .chart-card .highcharts-container,
+  .chart-card canvas { height: auto !important; }
+}
+
+/* Minor polish: reduce very large donut ring thickness on small screens */
+@media (min-width: 1200px) {
+  .charts-row.donuts .chart-card,
+  .chart-card.donut { max-height: 360px !important; }
+}
+
+/* Responsive: stack on narrow screens */
+@media (max-width: 900px) {
+  .charts-row .chart-card,
+  .charts-row .highcharts-container {
+    flex: 1 1 100%;
+    max-width: 100%;
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+
+/* Accessibility / smoothing */
+.content-header h1, h1, h2, h3, h4 { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+/* Utility responsive tweaks */
+@media (max-width: 1200px) {
+  .chart-card, .highcharts-container { max-height: min(44vh,460px) !important; height: min(44vh,460px) !important; }
+  .entry-photos .thumb, .photo-grid .thumb { width: clamp(48px, 16vw, 110px); }
+}
+@media (max-width: 900px) {
+  .report-grid { flex-direction: column; }
+  .report-sidebar { flex:0 0 auto; width:100%; }
+  .report-view { height:auto; }
+  .chart-card, .highcharts-container { max-height: 36vh !important; height: 36vh !important; }
+}
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  .container { padding:0 12px; }
+  .report-head { flex-direction:column; align-items:flex-start; gap:10px; }
+  h2 { font-size: 22px; }
+  .chart-card, .highcharts-container { max-height: 28vh !important; height: 28vh !important; }
+}
+
+/* Print rules */
+@media print {
+  .no-print, .topnav, .task-add-btn, .modal-backdrop { display:none !important; }
+  body { background:#fff; }
+  .container { width:100%; margin:0; padding:0 12px; }
+  .card { box-shadow:none; border:1px solid #ddd; }
+}
+
+/* Dashboard visual polish (append to assets/style.css) */
+
+/* --- Page-level layout --- */
+.dashboard-container {
+  max-width: 1180px;
+  margin: 18px auto;
+  padding: 0 18px;
+}
+
+/* Standard card appearance for dashboard */
+.dashboard-card {
+  background: #fff;
+  border: 1px solid rgba(249,198,221,0.6);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(219,39,119,0.04);
+  padding: 18px;
+  color: var(--text);
+}
+
+/* Section headings (more formal) */
+.dashboard-card h2,
+.dashboard-card h3 {
+  color: #7a123e;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+.dashboard-card p.lead {
+  color: var(--text-soft);
+  margin: 0 0 12px 0;
+  font-size: 0.98rem;
+}
+
+/* --- Top metrics bar --- */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+  align-items: stretch;
+}
+.metric {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:flex-start;
+  justify-content:center;
+  min-height:76px;
+  padding:12px;
+  border-radius:10px;
+  background: linear-gradient(180deg,#fff8fb,#fff);
+  border:1px solid rgba(244,182,204,0.45);
+}
+.metric .label { font-size:13px; color:var(--text-soft); font-weight:700; text-transform:uppercase; letter-spacing:.03em; }
+.metric .value { font-size:22px; color:var(--primary-dark); font-weight:800; }
+
+/* --- Charts grid (two columns desktop) --- */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+/* Chart card tweaks */
+.chart-card {
+  padding: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 280px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* Make chart inner fill card */
+.chart-card .chart-inner,
+.chart-card canvas,
+.chart-card .highcharts-container,
+.highcharts-container {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+/* Donut charts should be slightly smaller and centered */
+.chart-card.donut {
+  min-height: 300px;
+  max-height: 380px;
+  justify-content: center;
+  align-items: center;
+}
+.chart-card.donut .highcharts-container { display:flex; align-items:center; justify-content:center; }
+
+/* Compact legends under charts */
+.chart-card .legend, .highcharts-legend {
+  display:flex !important;
+  justify-content:center !important;
+  gap:10px !important;
+  font-size:13px !important;
+  margin-top:8px;
+}
+
+/* Align bar and line charts to be consistent height */
+.chart-card.bar,
+.chart-card.line { min-height: 320px; max-height:420px; }
+
+/* --- Tasks / planned list styling --- */
+.tasks-card ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.tasks-card li { padding:12px; border-radius:8px; background: #fff; border:1px solid rgba(249,198,221,0.35); display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+
+/* Dashboard — Planned card: tidy, two-column task rows, compact CTA */
+.tasks-card,
+.planned,
+.dashboard-card.planned {
+  /* ensure consistent card look */
+  background: #fff;
+  border: 1px solid rgba(249,198,221,0.55);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(219,39,119,0.04);
+  color: var(--text);
+}
+
+/* header row: title + action */
+.tasks-card .task-header,
+.planned .task-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.tasks-card .task-header .title,
+.planned .task-header .title { font-size:18px; font-weight:700; color:var(--heading); }
+
+/* round add button like screenshot */
+.tasks-card .add-btn,
+.planned .add-btn {
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  box-shadow: 0 6px 14px rgba(219,39,119,0.12);
+  border:0;
+  cursor:pointer;
+}
+
+/* tasks list layout: each row has content (left) and small controls (right) */
+.tasks-card .task-list,
+.planned .task-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin: 6px 0;
+}
+.tasks-card .task-item,
+.planned .task-item {
+  display:grid;
+  grid-template-columns: 1fr 48px; /* left = content, right = small checkbox/controls */
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border-radius:8px;
+  background: #fff;
+  border: 1px solid rgba(244,182,204,0.35);
+}
+
+/* left column: subject + meta */
+.tasks-card .task-item .task-main,
+.planned .task-item .task-main {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.tasks-card .task-item .task-main .subject,
+.planned .task-item .task-main .subject {
+  font-weight:600;
+  color:var(--primary-dark);
+}
+.tasks-card .task-item .task-main .meta,
+.planned .task-item .task-main .meta {
+  color:var(--text-soft);
+  font-size:0.95rem;
+}
+
+/* right column: checkbox aligned center */
+.tasks-card .task-item .task-action,
+.planned .task-item .task-action {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.tasks-card .task-item input[type="checkbox"],
+.planned .task-item input[type="checkbox"] {
+  width:18px;
+  height:18px;
+  accent-color: var(--primary);
+}
+
+/* fallback selectors if markup differs */
+.planned-list li { display:flex; justify-content:space-between; gap:12px; padding:10px; border-radius:8px; background:#fff; border:1px solid rgba(244,182,204,0.35); }
+.planned-list li .meta { color:var(--text-soft); font-size:0.95rem; }
+
+/* compact "Buka menu catatan" link style */
+.tasks-card .notes-link, .planned .notes-link {
+  display:inline-block;
+  margin-top:10px;
+  color:var(--primary-dark);
+  font-weight:700;
+  text-decoration:underline;
+  font-size:0.95rem;
+}
+
+/* Dashboard: style Planned / task-board to match layout reference */
+.task-board {
+  background: #fff;
+  border: 1px solid rgba(249,198,221,0.55);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(219,39,119,0.04);
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+/* Header row: title + add button */
+.task-board .task-board-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.task-board .task-board-title h3 {
+  margin:0;
+  font-size:18px;
+  color:var(--heading);
+  font-weight:700;
+}
+.task-board .task-email { color:var(--text-soft); font-size:0.95rem; }
+
+/* Round add button */
+.task-board .task-add-btn {
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  box-shadow: 0 6px 14px rgba(219,39,119,0.12);
+  border:0;
+  cursor:pointer;
+}
+
+/* Planned list layout */
+.planned-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin: 6px 0;
+}
+
+/* Each task row: left = checkbox form, right = content */
+.planned-list .task-item {
+  display:grid;
+  grid-template-columns: 52px 1fr;
+  gap:12px;
+  align-items:start;
+  padding:10px;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid rgba(244,182,204,0.35);
+}
+
+/* Checkbox/form column */
+.planned-list .task-check-form { display:flex; align-items:center; justify-content:center; padding:0; margin:0; }
+.planned-list input[type="checkbox"] { width:18px; height:18px; accent-color:var(--primary); }
+
+/* Content column */
+.planned-list .task-content { display:flex; flex-direction:column; gap:6px; }
+.planned-list .task-text { font-weight:600; color:var(--primary-dark); }
+.planned-list .task-meta { color:var(--text-soft); font-size:0.95rem; }
+
+/* Empty state */
+.task-board .task-item.no-notes {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:12px;
+  background:#fff;
+  border:1px dashed rgba(244,182,204,0.25);
+}
+
+/* Link */
+.task-board a.link-pink { font-weight:700; color:var(--primary-dark); text-decoration:underline; }
+
+/* Responsive: stack on small screens */
+@media (max-width:720px) {
+  .planned-list .task-item { grid-template-columns: 1fr; }
+  .task-board .task-add-btn { width:32px; height:32px; }
+}
+
+/* ---- Progress form tweaks: make daily rows and weekly rows visually consistent ---- */
+.status-chip {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1;
+  vertical-align: middle;
+}
+.status-chip.status-success { background: var(--success-bg); color: var(--success-text); }
+.status-chip.status-warning { background: var(--warning-bg); color: var(--warning-text); }
+
+/* Make textarea heights consistent across weeks */
+textarea {
+  min-height: 56px;
+  max-height: 220px;
+  resize: vertical;
+  font-size: clamp(15px,1.02vw,18px);
+  padding: 10px 12px;
+}
+
+/* File input and its wrapper consistent */
+input[type="file"] {
+  display: inline-block;
+  padding: 8px 10px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  font-size: 13px;
+}
+
+/* Progress table column helpers */
+.col-date { width: 130px; max-width: 180px; }
+.col-photos { min-width: 260px; }
+.col-check { width: 140px; max-width: 180px; }
+
+.col-week { width: 90px; max-width: 120px; }
+.col-week-status { width: 150px; max-width: 200px; }
+
+/* Next-week button helper */
+.next-week-btn.hidden { display: none !important; }
+.next-week-btn { display: inline-block; }
+
+/* Ensure table cells remain vertically centered */
+.table-wrap td { vertical-align: middle; }
