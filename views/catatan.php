@@ -7,7 +7,7 @@
     <h3>Tambah Tugas</h3>
     <form method="post">
         <input type="hidden" name="action" value="save_note">
-        <input type="hidden" name="internship_id" value="<?= (int)$id ?>">
+        <input type="hidden" name="internship_id" value="<?= (int)($id ?? $internship_id ?? 0) ?>">
 
         <div class="grid">
             <div>
@@ -72,7 +72,7 @@ foreach (($notes ?? []) as $note) {
                     <td>
                         <form method="post">
                             <input type="hidden" name="action" value="toggle_note">
-                            <input type="hidden" name="internship_id" value="<?= (int)$id ?>">
+                            <input type="hidden" name="internship_id" value="<?= (int)($id ?? $internship_id ?? 0) ?>">
                             <input type="hidden" name="note_id" value="<?= (int)$note['id'] ?>">
                             <input type="hidden" name="note_done" value="<?= (int)($note['note_done'] ?? 0) ?>">
 
@@ -88,7 +88,7 @@ foreach (($notes ?? []) as $note) {
                     <td>
                         <form method="post" onsubmit="return confirm('Hapus tugas ini?');">
                             <input type="hidden" name="action" value="delete_note">
-                            <input type="hidden" name="internship_id" value="<?= (int)$id ?>">
+                            <input type="hidden" name="internship_id" value="<?= (int)($id ?? $internship_id ?? 0) ?>">
                             <input type="hidden" name="note_id" value="<?= (int)$note['id'] ?>">
                             <button type="submit" class="btn-plain">Hapus</button>
                         </form>

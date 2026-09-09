@@ -135,5 +135,34 @@ function getEffectiveUnlockedWeek(PDO $pdo, int $internshipId, string $start): i
     $stmt = $pdo->prepare("SELECT manual_unlocked_weeks FROM internships WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $internshipId]);
     $extra = (int)$stmt->fetchColumn();
-    return max(1, min(12, $base + $extra));
+
+    // Allow date/manual based unlocking, but restrict visibility so that
+    // the next week only becomes available when ALL days in all previous
+    // weeks are completed (have kegiatan, checklist=1, and photo_path).
+    $maxByDate = max(1, min(12, $base + $extra));
+
+    // Count consecutive completed weeks starting from 1
+    $consecutiveCompleted = 0;
+    for ($w = 1; $w <= 12; $w++) {
+        // Check if any daily report in this week is incomplete
+        $incompleteStmt = $pdo->prepare(
+            "SELECT COUNT(*) FROM daily_reports
+             WHERE internship_id = :id AND minggu = :minggu
+             AND (checklist <> 1 OR TRIM(COALESCE(kegiatan, '')) = '' OR TRIM(COALESCE(photo_path, '')) = '')"
+        );
+        $incompleteStmt->execute([':id' => $internshipId, ':minggu' => $w]);
+        $incomplete = (int)$incompleteStmt->fetchColumn();
+
+        if ($incomplete === 0) {
+            $consecutiveCompleted++;
+        } else {
+            break;
+        }
+    }
+
+    // The next unlocked week based on completion is consecutiveCompleted + 1
+    $byCompletion = max(1, min(12, $consecutiveCompleted + 1));
+
+    // Final effective unlocked week is the lesser of date/manual and completion-based limits
+    return min($maxByDate, $byCompletion);
 }
