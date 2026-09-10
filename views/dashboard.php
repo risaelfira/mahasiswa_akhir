@@ -105,28 +105,26 @@ usort($plannedNotes, function($a, $b) {
 });
 ?>
 
-<div class="card">
+<div class="dashboard-card card">
     <h2>Dashboard Visualisasi Progres Magang</h2>
-    <p class="muted">Diagram progres laporan magang, progres magang, progres harian magang, dan progres mingguan magang.</p>
+    <p class="muted lead">Diagram progres laporan magang, progres magang, progres harian magang, dan progres mingguan magang.</p>
     <p>
-        <a href="?page=progress" class="link-pink" style="display:inline-block;padding:10px 14px;border:1px solid #f9a8d4;border-radius:8px;background:#fff5fa;">
-            Isi Progres Sekarang
-        </a>
+        <a href="?page=progress" class="btn-plain link-pink" style="display:inline-block;padding:10px 14px;border-radius:8px;">Isi Progres Sekarang</a>
     </p>
 </div>
 
-<div class="progress-summary">
-    <div class="summary-box">
-        <div class="summary-title">Laporan</div>
-        <div class="summary-number"><?= (int)$laporanPercent ?>%</div>
+<div class="metrics-row">
+    <div class="metric">
+        <div class="label">Laporan</div>
+        <div class="value"><?= (int)$laporanPercent ?>%</div>
     </div>
-    <div class="summary-box">
-        <div class="summary-title">Keseluruhan</div>
-        <div class="summary-number"><?= (int)$overallMagangPercent ?>%</div>
+    <div class="metric">
+        <div class="label">Keseluruhan</div>
+        <div class="value"><?= (int)$overallMagangPercent ?>%</div>
     </div>
-    <div class="summary-box">
-        <div class="summary-title">Minggu Aktif</div>
-        <div class="summary-number"><?= (int)$currentWeekNo ?></div>
+    <div class="metric">
+        <div class="label">Minggu Aktif</div>
+        <div class="value"><?= (int)$currentWeekNo ?></div>
     </div>
 </div>
 
@@ -320,7 +318,8 @@ new Chart(document.getElementById('chartLaporan'), {
         callbacks: {
           label: (ctx) => `${ctx.label}: ${ctx.raw}%`
         }
-      }
+      },
+      centerTextPlugin: { value: laporanPercent, label: 'Laporan' }
     }
   },
   plugins: [centerTextPlugin],
@@ -345,7 +344,8 @@ new Chart(document.getElementById('chartMagang'), {
         callbacks: {
           label: (ctx) => `${ctx.label}: ${ctx.raw}%`
         }
-      }
+      },
+      centerTextPlugin: { value: overallMagangPercent, label: 'Keseluruhan' }
     }
   },
   plugins: [centerTextPlugin],
@@ -444,9 +444,3 @@ if (noteModal) noteModal.addEventListener('click', function (e) {
   if (e.target === noteModal) hideNoteModal();
 });
 </script>
-
-<style>
-.chart-card canvas {
-    height: 420px !important;
-}
-</style>
