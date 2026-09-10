@@ -10,8 +10,20 @@ if (!is_dir($dbDir)) mkdir($dbDir, 0777, true);
 $uploadDir = __DIR__ . DIRECTORY_SEPARATOR . 'uploads';
 if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
-$pdo = new PDO('sqlite:' . $dbDir . DIRECTORY_SEPARATOR . 'magang.db');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo = null;
+try {
+    $pdo = new PDO('sqlite:' . $dbDir . DIRECTORY_SEPARATOR . 'magang.db');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    http_response_code(500);
+    if (!extension_loaded('pdo_sqlite')) {
+        $hint = "PDO SQLite driver not enabled. Enable the 'pdo_sqlite' and 'sqlite3' extensions in your php.ini (uncomment extension=sqlite3 and extension=pdo_sqlite or extension=php_pdo_sqlite.dll on Windows), then restart Laragon/Apache/PHP-FPM.";
+    } else {
+        $hint = 'Unable to open SQLite database: ' . $e->getMessage();
+    }
+    echo "<h1>Configuration error</h1><p>" . htmlspecialchars($hint, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "</p>";
+    exit;
+}
 
 $pdo->exec("
 CREATE TABLE IF NOT EXISTS internships (
