@@ -165,3 +165,6 @@ $internCols = $pdo->query("PRAGMA table_info(internships)")->fetchAll(PDO::FETCH
 if (!in_array('manual_unlocked_weeks', $internCols, true)) {
     $pdo->exec("ALTER TABLE internships ADD COLUMN manual_unlocked_weeks INTEGER NOT NULL DEFAULT 0");
 }
+
+$pdo->exec('PRAGMA foreign_keys = ON');
+$pdo->exec('PRAGMA busy_timeout = 5000');
