@@ -174,16 +174,14 @@ usort($plannedNotes, function($a, $b) {
 <div class="task-board card">
     <div class="task-board-top">
         <div class="task-board-title">
-            <span class="task-check">✓</span>
+            <span class="task-check">âœ“</span>
             <div>
                 <h3>Planned</h3>
                 <div class="task-email"><?= e((string)($_SESSION['username'] ?? '')) ?></div>
             </div>
         </div>
 
-        <!-- + button: has add-btn and inline fallback onclick to open modal -->
-        <button type="button" class="task-add-btn add-btn" id="openNoteModal"
-          onclick="(function(){const m=document.getElementById('plannedModal'); if(!m) return; m.style.display='flex'; m.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';})();">+</button>
+        <button type="button" class="task-add-btn" id="openNoteModal">+</button>
     </div>
 
     <div class="task-divider"></div>
@@ -207,9 +205,9 @@ usort($plannedNotes, function($a, $b) {
                     <div class="task-content">
                         <div class="task-text"><?= e((string)($note['note_text'] ?? '')) ?></div>
                         <div class="task-meta">
-                            Tenggat • <?= e(date('d M Y', strtotime((string)($note['note_date'] ?? '')))) ?>
+                            Tenggat â€¢ <?= e(date('d M Y', strtotime((string)($note['note_date'] ?? '')))) ?>
                             <?php if (!empty($note['note_priority'])): ?>
-                                • Prioritas: <?= e((string)$note['note_priority']) ?>
+                                â€¢ Prioritas: <?= e((string)$note['note_priority']) ?>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -229,10 +227,7 @@ usort($plannedNotes, function($a, $b) {
     <div style="margin-top:14px;">
         <a href="?page=catatan" class="link-pink">Buka menu catatan</a>
     </div>
-</div>
-
-<!-- Charts + modal handling scripts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const laporanPercent = <?= (int)$laporanPercent ?>;
 const overallMagangPercent = <?= (int)$overallMagangPercent ?>;
@@ -241,7 +236,6 @@ const weeklyValues = <?= json_encode($weeklyValues) ?>;
 const dailyLabels = <?= json_encode($dailyLabels) ?>;
 const dailyValues = <?= json_encode($dailyValues) ?>;
 
-/* centerTextPlugin and chart initializations (unchanged) */
 const centerTextPlugin = {
   id: 'centerTextPlugin',
   afterDraw(chart, args, pluginOptions) {
@@ -389,42 +383,50 @@ new Chart(document.getElementById('chartMingguan'), {
     responsive: true,
   }
 });
-</script>
 
-<!-- Planned modal (single source of truth for adding notes) -->
+const noteModal = document.getElementById('noteModal');
+const openNoteModal = document.getElementById('openNoteModal');
+const closeNoteModal = document.getElementById('closeNoteModal');
+const cancelNoteModal = document.getElementById('cancelNoteModal');
+
+function showNoteModal() {
+  if (noteModal) noteModal.classList.add('show');
+}
+
+function hideNoteModal() {
+  if (noteModal) noteModal.classList.remove('show');
+}
+
+if (openNoteModal) openNoteModal.addEventListener('click', showNoteModal);
+if (closeNoteModal) closeNoteModal.addEventListener('click', hideNoteModal);
+if (cancelNoteModal) cancelNoteModal.addEventListener('click', hideNoteModal);
+if (noteModal) noteModal.addEventListener('click', function (e) {
+  if (e.target === noteModal) hideNoteModal();
+});
+</script><!-- Planned Modal (inserted by script) -->
 <div id="plannedModal" class="modal-backdrop no-print" aria-hidden="true" style="display:none;">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="plannedModalTitle">
     <header class="modal-header">
       <h3 id="plannedModalTitle">Tambah Catatan</h3>
-      <button type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      <button class="modal-close" aria-label="Tutup">&times;</button>
     </header>
     <div class="modal-body">
-      <form id="plannedForm" action="actions.php" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="action" value="save_note" />
-        <input type="hidden" name="internship_id" value="<?= (int)$id ?>" />
-
-        <div class="grid">
-          <div>
-            <label for="note_date">Tanggal</label>
-            <input id="note_date" type="date" name="note_date" required />
-          </div>
-
-          <div>
-            <label for="note_priority">Prioritas</label>
-            <select id="note_priority" name="note_priority">
-              <option value="low">Low</option>
-              <option value="normal" selected>Normal</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-
-          <div style="grid-column: 1 / -1;">
-            <label for="note_text">Catatan</label>
-            <textarea id="note_text" name="note_text" required placeholder="Contoh: Membuat report selama 1 minggu"></textarea>
-          </div>
-        </div>
-
-        <div class="modal-actions" style="margin-top:12px;">
+      <form id="plannedForm" action="actions.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="add_note" />
+        <label> Tanggal
+          <input type="date" name="tanggal" />
+        </label>
+        <label> Prioritas
+          <select name="prioritas">
+            <option>Normal</option>
+            <option>Tinggi</option>
+            <option>Rendah</option>
+          </select>
+        </label>
+        <label> Catatan
+          <textarea name="catatan" placeholder="Contoh: Membuat report selama 1 minggu"></textarea>
+        </label>
+        <div class="modal-actions">
           <button type="button" class="btn-plain modal-cancel">Batal</button>
           <button type="submit" class="btn-primary">Simpan</button>
         </div>
@@ -432,47 +434,8 @@ new Chart(document.getElementById('chartMingguan'), {
     </div>
   </div>
 </div>
-
-<!-- inline modal hookup (primary) + keep fallback script -->
-<script>
-  (function(){
-    function showPlannedModal(){
-      var m = document.getElementById('plannedModal');
-      if(!m) return;
-      m.style.display = 'flex';
-      m.style.zIndex = '99999';
-      m.setAttribute('aria-hidden','false');
-      document.body.style.overflow = 'hidden';
-    }
-    function hidePlannedModal(){
-      var m = document.getElementById('plannedModal');
-      if(!m) return;
-      m.style.display = 'none';
-      m.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('DOMContentLoaded', function(){
-      var openBtn = document.getElementById('openNoteModal') || document.querySelector('.task-add-btn') || document.querySelector('.add-btn');
-      if(openBtn){
-        // ensure only one listener
-        try{ openBtn.removeEventListener && openBtn.removeEventListener('click', showPlannedModal); }catch(e){}
-        openBtn.addEventListener('click', function(e){ e.preventDefault(); showPlannedModal(); });
-      }
-
-      // delegate close actions
-      document.body.addEventListener('click', function(e){
-        if(e.target && (e.target.classList.contains('modal-close') || e.target.classList.contains('modal-cancel'))){
-          e.preventDefault(); hidePlannedModal();
-        }
-        // backdrop click
-        if(e.target && e.target.id === 'plannedModal'){
-          hidePlannedModal();
-        }
-      });
-
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') hidePlannedModal(); });
-    });
-  })();
-</script>
+<!-- include modal script -->
 <script src="assets/modal.js"></script>
+
+
+
